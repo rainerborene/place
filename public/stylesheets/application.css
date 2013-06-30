@@ -1,0 +1,37 @@
+.main .content {
+  background: url('/images/background.jpg') no-repeat left top;
+  background-size: 100% 100%;
+}
+
+.main input {
+  margin-top: 240px;
+}
+
+.messages textarea {
+  margin-top: 20px;
+  resize: none;
+}
+
+.message {
+  padding: 10px 12px;
+}
+
+.message:nth-child(2n) {
+  background: #f4f4f4;
+  border: 1px solid #ececec;
+}
+
+.username {
+  color: #ababab;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.text {
+  color: #000;
+}
+
+#mapbox {
+  height: 420px;
+	top: 44px;
+}

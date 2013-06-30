@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Place</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon-precomposed" sizes="57x57" href="images/apple-touch-icon-57x57.png">
+    <link href='http://api.tiles.mapbox.com/mapbox.js/v1.0.0/mapbox.css' rel='stylesheet' />
+    <link rel="stylesheet" href="/stylesheets/ratchet.css">
+    <link rel="stylesheet" href="/stylesheets/application.css">
+    <script src='http://api.tiles.mapbox.com/mapbox.js/v1.0.0/mapbox.js'></script>
+    <script src="/javascripts/jquery.js"></script>
+    <script src="/javascripts/underscore.js"></script>
+    <script src="/javascripts/backbone.js"></script>
+    <script src="/javascripts/ratchet.js"></script>
+    <script src="/javascripts/handlebars.js"></script>
+    <script src="/javascripts/application.js"></script>
+    <script src="/javascripts/views/main.js"></script>
+    <script src="/javascripts/views/messages.js"></script>
+    <script src="/javascripts/views/map.js"></script>
+    <script src="/javascripts/routers/main.js"></script>
+    <script>$(Place.launch);</script>
+  </head>
+  <body>
+    <div id="app"></div>
+    
+    <script id="main-template" type="text/x-handlebars-template">
+      <div class="content content-padded">
+        <form>
+          <!--
+          <a href="/auth/facebook" style="display: block; text-align: center; margin-top: 390px" data-ignore="push">
+            <img src="/images/facebook-button.png" />
+          </a>
+          -->
+          <input type="text" placeholder="Nome completo">
+          <a class="button button-block" href="#messages">Entrar</a>
+        </form>
+      </div>
+    </script>
+    
+    <script id="messages-template" type="text/x-handlebars-template">
+      <header class="bar-title">
+        <h1 class="title">Mensagens</h1>
+        <a class="button-next" href="#map">Mapa</a>
+      </header>
+
+      <div class="content content-padded">
+        <textarea rows="3"></textarea>
+      </div>
+    </script>
+    
+    <script id="map-template" type="text/x-handlebars-template">
+      <header class="bar-title">
+        <a class="button-prev" href="#messages">Mensagens</a>
+        <h1 class="title">Mapa</h1>
+      </header>
+
+      <div id="content content-padded">
+        <div id="mapbox"></div>
+      </div>
+    </script>
+    
+    <script id="message-template" type="text/x-handlebars-template">
+      <div class="message">
+        <p class="username">{{username}}</p>
+        <p class="text">{{message}}</p>
+      </div>
+    </script>
+  </body>
+</html>
