@@ -6,10 +6,10 @@ Place.MainRouter = Backbone.Router.extend({
     "messages": "messages",
     "map": "map"
   },
-  
+
   index: function(){
     if (Place.logged()) {
-      return this.navigate('messages', { trigger: true, replace: true });
+      return this.go('messages');
     }
 
     this.mainView = new Place.MainView();
@@ -17,14 +17,22 @@ Place.MainRouter = Backbone.Router.extend({
   },
   
   messages: function(){
+    if (!Place.logged()) return this.go('');
+
     this.messagesView = new Place.MessagesView();
     this.switchView(this.messagesView);
   },
   
   map: function(){
+    if (!Place.logged()) return this.go('');
+
     this.mapView = new Place.MapView();
     this.switchView(this.mapView);
     this.mapView.renderMap();
+  },
+
+  go: function(action){
+    return this.navigate(action, { trigger: true, replace: true });
   },
 
   switchView: function(view) {

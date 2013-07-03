@@ -13,7 +13,6 @@ Place.MessagesView = Backbone.View.extend({
   send: function(event){
     if (event.keyCode === 13 || event.which === 13) {
       Place.socket().send(JSON.stringify({ 
-        subject: 'message',
         username: Place.currentUser.get('name'), 
         profile_image: Place.currentUser.get('profile_image'),
         message: event.target.value
@@ -27,9 +26,7 @@ Place.MessagesView = Backbone.View.extend({
     var source = $("#message-template").html()
       , template = Handlebars.compile(source);
 
-    if (params.subject === 'message'){
-      this.$el.find('textarea').before(template(params));
-    }
+    this.$el.find('textarea').before(template(params));
   },
 
   render: function(){

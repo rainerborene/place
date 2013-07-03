@@ -54,7 +54,7 @@
       </header>
 
       <div id="content content-padded">
-        <div id="mapbox"></div>
+        <div id="mapbox" class="dark"></div>
       </div>
     </script>
     
@@ -69,7 +69,9 @@
 
     <script>
       $(function(){
-        Place.login(<%= current_user.to_json %>); 
+        <% if authenticated? %>
+          Place.login(<%= current_user.to_json %>); 
+        <% end %>
         Place.launch();
       });
     </script>
