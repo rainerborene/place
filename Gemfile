@@ -1,4 +1,4 @@
-source 'http://rubygems.org'
+source 'https://rubygems.org'
 
 gem 'sinatra', require: 'sinatra/base'
 gem 'data_mapper'
@@ -7,6 +7,7 @@ gem 'em-websocket'
 gem 'eventmachine'
 gem 'omniauth-facebook', '1.4.0'
 gem 'dotenv'
+gem 'pry'
 
 group :test do
   gem 'rack-test', require: 'rack/test'

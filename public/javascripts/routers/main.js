@@ -2,33 +2,43 @@ Place.MainRouter = Backbone.Router.extend({
 
   routes: {
     "": "index",
+    "_=_": "index",
     "messages": "messages",
     "map": "map"
   },
   
   index: function(){
-    this._swap();
-    this.view = new Place.MainView().render();
-    this.view.$el.appendTo("#app");
+    if (Place.logged()) {
+      return this.navigate('messages', { trigger: true, replace: true });
+    }
+
+    this.mainView = new Place.MainView();
+    this.switchView(this.mainView);
   },
   
   messages: function(){
-    this._swap();
-    this.view = new Place.MessagesView().render();
-    this.view.$el.appendTo("#app");
+    this.messagesView = new Place.MessagesView();
+    this.switchView(this.messagesView);
   },
   
   map: function(){
-    this._swap();
-    this.view = new Place.MapView().render();
-    this.view.$el.appendTo("#app");
-    this.view.renderMap();
+    this.mapView = new Place.MapView();
+    this.switchView(this.mapView);
+    this.mapView.renderMap();
   },
-  
-  _swap: function(){
-    if (this.view !== undefined){
-      this.view.remove();
+
+  switchView: function(view) {
+    if (this.currentView) {
+      this.currentView.remove();
     }
+
+    // Move the view element into the DOM (replacing the old content)
+    view.$el.appendTo("#app");
+
+    // Render view after it is in the DOM (styles are applied)
+    view.render();
+
+    this.currentView = view;
   }
   
 });

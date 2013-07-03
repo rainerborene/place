@@ -19,26 +19,20 @@
     <script src="/javascripts/ratchet.js"></script>
     <script src="/javascripts/handlebars.js"></script>
     <script src="/javascripts/application.js"></script>
+    <script src="/javascripts/models/user.js"></script>
     <script src="/javascripts/views/main.js"></script>
     <script src="/javascripts/views/messages.js"></script>
     <script src="/javascripts/views/map.js"></script>
     <script src="/javascripts/routers/main.js"></script>
-    <script>$(Place.launch);</script>
   </head>
   <body>
     <div id="app"></div>
     
     <script id="main-template" type="text/x-handlebars-template">
       <div class="content content-padded">
-        <form>
-          <!--
-          <a href="/auth/facebook" style="display: block; text-align: center; margin-top: 390px" data-ignore="push">
-            <img src="/images/facebook-button.png" />
-          </a>
-          -->
-          <input type="text" placeholder="Nome completo">
-          <a class="button button-block" href="#messages">Entrar</a>
-        </form>
+        <a href="/auth/facebook" style="display: block; text-align: center; margin-top: 390px" data-ignore="push">
+          <img src="/images/facebook-button.png" />
+        </a>
       </div>
     </script>
     
@@ -66,9 +60,18 @@
     
     <script id="message-template" type="text/x-handlebars-template">
       <div class="message">
-        <p class="username">{{username}}</p>
+        <p class="username">
+          <img src="{{profile_image}}" width="25" height="25" /> {{username}}
+        </p>
         <p class="text">{{message}}</p>
       </div>
+    </script>
+
+    <script>
+      $(function(){
+        Place.login(<%= current_user.to_json %>); 
+        Place.launch();
+      });
     </script>
   </body>
 </html>

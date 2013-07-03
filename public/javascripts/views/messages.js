@@ -3,37 +3,32 @@ Place.MessagesView = Backbone.View.extend({
   className: 'messages',
 
   events: {
-    "keyup textarea": "sendMessage"
+    "keyup textarea": "send"
   },
   
   initialize: function(){
-    _.bindAll(this, 'onMessage');
-    
-    this.socket = new WebSocket('ws://localhost:8080');
-    this.socket.onmessage = this.onMessage;
+    Place.socket().on("message", this.append, this);
   },
   
-  onMessage: function(msg){
-    var source = $("#message-template").html()
-      , template = Handlebars.compile(source)
-      , locals = JSON.parse(msg.data);
-
-    if (locals.subject === 'message') {
-      this.$el.find('textarea').before(template(locals));
-    } else if (locals.subject === 'location') {
-      Place.users.push(locals);
-    }
-  },
-
-  sendMessage: function(event){
+  send: function(event){
     if (event.keyCode === 13 || event.which === 13) {
-      this.socket.send(JSON.stringify({ 
+      Place.socket().send(JSON.stringify({ 
         subject: 'message',
-        username: Place.currentUsername, 
+        username: Place.currentUser.get('name'), 
+        profile_image: Place.currentUser.get('profile_image'),
         message: event.target.value
       }));
       
       $(event.target).val("");
+    }
+  },
+
+  append: function(params){
+    var source = $("#message-template").html()
+      , template = Handlebars.compile(source);
+
+    if (params.subject === 'message'){
+      this.$el.find('textarea').before(template(params));
     }
   },
 

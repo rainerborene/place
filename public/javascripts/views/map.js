@@ -3,8 +3,8 @@ Place.MapView = Backbone.View.extend({
   id: 'map',
 
   initialize: function(){
-    _.bindAll(this, 'resize');
-    $(window).resize(this.resize);
+    Place.Users.on("add", this.insertMarker, this);
+    $(window).resize(_.bind(this.resize, this));
   },
 
   resize: function(){
@@ -15,39 +15,66 @@ Place.MapView = Backbone.View.extend({
     return '#'+Math.floor(Math.random()*16777215).toString(16);
   },
 
-  markerLayer: function(name, coordinates){
-    return L.mapbox.markerLayer({
+  markerLayer: function(attributes){
+    var layer = L.mapbox.markerLayer({
       type: 'Feature',
       geometry: {
         type: 'Point',
-        coordinates: coordinates
+        coordinates: attributes.coordinates
       },
       properties: {
-        title: name,
+        title: attributes.name,
+        image: attributes.image,
         'marker-color': this.randomColor()
       }
     });
+
+
+    return layer;
+  },
+
+  insertMarker: function(user){
+    this.mapBox.markerLayer.addLayer(
+      this.markerLayer({
+        name: user.get('name'),
+        image: user.get('profile_image'),
+        coordinates: user.coordinates().reverse()
+      })
+    );
   },
 
   render: function(){
     this.$el.html($("#map-template").html());
+    this.resize();
     return this;
   },
 
+  circleOptions: {
+    color: '#ff0000',
+    opacity: 0.2,
+    weight: 5,
+    fillColor: '#ff0000',
+    fillOpacity: 0.1
+  },
+
   renderMap: function(){
-    var coordinates = [
-      Place.currentPosition.coords.latitude,
-      Place.currentPosition.coords.longitude
-    ];
+    var coordinates = Place.currentUser.coordinates();
 
-    this.map = L.mapbox.map('mapbox', 'examples.map-y7l23tes');
-    this.map.setView(coordinates, 14);
+    this.mapBox = L.mapbox.map('mapbox', 'examples.map-y7l23tes');
+    this.mapBox.setView(coordinates, 14);
+    this.mapBox.markerLayer.on('mouseover', function(e){
+      e.layer.openPopup();
+    });
 
-    this.markerLayer(Place.currentUsername, coordinates.reverse()).addTo(this.map);
+    this.mapBox.markerLayer.on('mouseout', function(e){
+      e.layer.closePopup();
+    });
 
-    Place.users.forEach(function(item){
-      this.markerLayer(item.username, item.coordinates).addTo(this.map);
-    }, this);
+    L.circle(coordinates, 2000, this.circleOptions).addTo(this.mapBox);
+
+    Place.Users.fetch();
+
+    return this;
   }
 
 });
